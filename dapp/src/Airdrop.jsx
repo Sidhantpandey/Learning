@@ -6,6 +6,7 @@ export default function RequestAirdrop() {
   const wallet = useWallet();
   const { connection } = useConnection();
 
+  //Request for Airdrop
   async function requestAirdrop() {
     let amount = document.getElementById("amount").value;
     await connection.requestAirdrop(
@@ -15,9 +16,10 @@ export default function RequestAirdrop() {
     alert("Airdropped " + amount + " SOL to " + wallet.publicKey.toBase58());
   }
 
+  
   return (
     <div>
-  
+
       <input id="amount" type="text" placeholder="Amount" />
       <button onClick={requestAirdrop}>Request Airdrop</button>
     </div>
