@@ -1,2 +1,2 @@
 # Blockchain-Learning
-This is a repo for blockchain mini projects and notes
+This repo is for projects related to blockchain and notes or code  related to blockchain.
