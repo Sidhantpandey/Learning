@@ -9,8 +9,11 @@ import {
 import { createPublicClient, http } from "viem";
 import { mainnet } from "viem/chains";
 import { useEffect, useState } from "react";
-
+import { WagmiProvider } from 'wagmi'
+import { config } from '../config'
+import { WalletOptions } from "./WalletOptions";
 // Creating a public client
+
 const client = createPublicClient({
   chain: mainnet,
   transport: http(),
@@ -78,13 +81,52 @@ function App() {
   }
 
   // Hookifying viem
-  
+  // getter function -> query client-> function in which queryClient is used and called
+
+  async function getBalance() {
+    const client = createPublicClient({
+      chain: mainnet,
+      transport: http(),
+    });
+
+    const balance = await client.getBalance({ address: "0x075c299cf3b9FCF7C9fD5272cd2ed21A4688bEeD" })
+    return balance.toString();
+  }
+
+
+  function Todo() {
+    // Access the client
+    const queryClient = useQueryClient();
+
+    // Queries
+    const query = useQuery({
+      queryKey: ["todos"],
+      queryFn: getBalance,
+      refetchInterval: 10 * 1000,
+    });
+
+
+    return (
+      <div>
+        Balance:
+        {query.data}
+      </div>
+    )
+  }
+
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* <Todos /> */}
-      <Balance />
-    </QueryClientProvider>
+    <WagmiProvider config={config}>
+
+      <QueryClientProvider client={queryClient}>
+        {/* <Todos /> */}
+        {/* <Balance /> */}
+        <Todo />
+        <WalletOptions />
+
+      </QueryClientProvider>
+    </WagmiProvider>
+
   );
 }
 
